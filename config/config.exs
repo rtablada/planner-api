@@ -23,6 +23,15 @@ config :plug, :mimes, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
+config :guardian, Guardian,
+  allowed_algos: ["HS512"], # optional
+  verify_module: Guardian.JWT,  # optional
+  issuer: "Planner",
+  ttl: { 30, :days },
+  verify_issuer: true, # optional
+  secret_key: "DKe8WkHqEk+3o/DHoMVZ2QrH0Uj1geOhvSTuHQ0MkQNB4z+5WeeRbXoaFOGeoAPU",
+  serializer: Planner.GuardianSerializer
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

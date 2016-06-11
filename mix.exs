@@ -42,6 +42,7 @@ defmodule Planner.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
       {:exrm, "~> 1.0"},
+      {:guardian, "~> 0.12.0"},
     ]
   end
 
