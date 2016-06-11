@@ -3,7 +3,7 @@ defmodule Planner.Mixfile do
 
   def project do
     [app: :planner,
-     version: "0.0.1",
+     version: "0.1.0",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -17,9 +17,14 @@ defmodule Planner.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Planner, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+    [
+      mod: {Planner, []},
+      applications: [
+        :phoenix, :cowboy,
+        :postgrex, :logger,
+        :gettext, :phoenix_ecto,
+      ]
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -30,11 +35,14 @@ defmodule Planner.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.5"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 2.0"},
-     {:gettext, "~> 0.9"},
-     {:cowboy, "~> 1.0"}]
+    [
+      {:phoenix, "~> 1.1.5"},
+      {:postgrex, ">= 0.0.0"},
+      {:phoenix_ecto, "~> 2.0"},
+      {:gettext, "~> 0.9"},
+      {:cowboy, "~> 1.0"},
+      {:exrm, "~> 1.0"},
+    ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

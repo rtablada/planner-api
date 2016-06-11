@@ -1,0 +1,11 @@
+language: elixir
+elixir:
+  - 1.2
+otp_release:
+  - 18.2
+sudo: false
+addons:
+  postgresql: '9.4' # Use postgres 9.4
+before_script:
+# Create the test database
+- psql -c 'create database planner_test;' -U postgres
