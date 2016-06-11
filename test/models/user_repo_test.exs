@@ -6,7 +6,7 @@ defmodule Planner.UserRepoTest do
 
   test "users cannot have the same email" do
     changeset = User.register_instructor_changeset(%User{}, @valid_attrs)
-    user = Repo.insert!(changeset)
+    Repo.insert!(changeset)
 
     changeset = User.register_instructor_changeset(%User{}, @valid_attrs)
     assert({:error, changeset} = Repo.insert(changeset))
