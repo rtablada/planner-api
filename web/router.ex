@@ -7,5 +7,7 @@ defmodule Planner.Router do
 
   scope "/api", Planner do
     pipe_through :api
+
+    get("/", StatusController, :index)
   end
 end
