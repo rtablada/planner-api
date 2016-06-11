@@ -43,6 +43,7 @@ defmodule Planner.Mixfile do
       {:cowboy, "~> 1.0"},
       {:exrm, "~> 1.0"},
       {:guardian, "~> 0.12.0"},
+      {:mix_test_watch, "~> 0.2", only: :dev},
     ]
   end
 
