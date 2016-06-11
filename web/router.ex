@@ -9,5 +9,7 @@ defmodule Planner.Router do
     pipe_through :api
 
     get("/", StatusController, :index)
+
+    post("/token/auth", LoginController, :create)
   end
 end
