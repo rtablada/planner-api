@@ -47,6 +47,7 @@ defmodule Planner.Mixfile do
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:comeonin, "~> 2.4"},
       {:cors_plug, "~> 1.1"},
+      {:ja_serializer, "~> 0.8.1"},
     ]
   end
 

@@ -7,15 +7,21 @@ defmodule Planner.LoginControllerTest do
     changeset = Planner.User.register_changeset(%Planner.User{}, @user_attrs)
     user = Planner.Repo.insert!(changeset)
 
-    conn = post(conn, login_path(conn, :create), @user_attrs)
+    input = Map.put(@user_attrs, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
 
-    assert %{"auth_token" => token} = json_response(conn, 200)
+    conn = post(conn, login_path(conn, :create), input)
+
+    assert %{"access_token" => token} = json_response(conn, 200)
     assert {:ok, %{"aud" => "User:" <> id}} = Guardian.decode_and_verify(token)
     assert user.id == String.to_integer(id)
   end
 
   test "errors when user does not exist", %{conn: conn} do
-    conn = post(conn, login_path(conn, :create), @user_attrs)
+    input = Map.put(@user_attrs, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
+
+    conn = post(conn, login_path(conn, :create), input)
 
     assert \
       %{"errors" => [
@@ -26,9 +32,11 @@ defmodule Planner.LoginControllerTest do
   test "errors with invalid password for existing user", %{conn: conn} do
     changeset = Planner.User.register_changeset(%Planner.User{}, @user_attrs)
     Planner.Repo.insert!(changeset)
-    invalid_attrs = Map.put(@user_attrs, :password, "invalid")
+    input = Map.put(@user_attrs, :password, "invalid")
+    input = Map.put(input, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
 
-    conn = post(conn, login_path(conn, :create), invalid_attrs)
+    conn = post(conn, login_path(conn, :create), input)
 
     assert \
       %{"errors" => [
