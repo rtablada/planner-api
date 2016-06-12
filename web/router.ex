@@ -10,6 +10,6 @@ defmodule Planner.Router do
 
     get("/", StatusController, :index)
 
-    post("/token/auth", LoginController, :create)
+    post("/token", LoginController, :create)
   end
 end
