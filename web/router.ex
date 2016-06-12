@@ -11,5 +11,6 @@ defmodule Planner.Router do
     get("/", StatusController, :index)
 
     post("/token", LoginController, :create)
+    resources("/lessons", LessonController, except: [:new, :edit])
   end
 end
