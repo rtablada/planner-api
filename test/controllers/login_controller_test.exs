@@ -12,7 +12,7 @@ defmodule Planner.LoginControllerTest do
 
     conn = post(conn, login_path(conn, :create), input)
 
-    assert %{"auth_token" => token} = json_response(conn, 200)
+    assert %{"access_token" => token} = json_response(conn, 200)
     assert {:ok, %{"aud" => "User:" <> id}} = Guardian.decode_and_verify(token)
     assert user.id == String.to_integer(id)
   end

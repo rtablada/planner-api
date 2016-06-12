@@ -10,7 +10,7 @@ defmodule Planner.LoginController do
       {:ok, user} ->
         { :ok, jwt, _} = Guardian.encode_and_sign(user, :token)
         conn
-        |> json(%{auth_token: jwt})
+        |> json(%{access_token: jwt})
       {:error, :unauthorized} ->
         conn
         |> put_status(401)
