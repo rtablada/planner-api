@@ -6,7 +6,14 @@ defmodule Planner.LessonControllerTest do
   @invalid_attrs %{}
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = Repo.insert! %Planner.User{}
+    { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
+
+    conn = conn
+    |> put_req_header("content-type", "application/vnd.api+json") # JSON-API content-type
+    |> put_req_header("authorization", "Bearer #{jwt}") # Add token to auth header
+
+    {:ok, %{conn: conn, user: user}} # Pass user object to each test
   end
 
   test "lists all entries on index", %{conn: conn} do
