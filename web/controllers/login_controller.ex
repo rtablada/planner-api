@@ -3,7 +3,7 @@ defmodule Planner.LoginController do
 
   alias Planner.Auth
 
-  def create(conn, %{"email" => email, "password" => password}) do
+  def create(conn, %{"email" => email, "password" => password, "grant_type" => "password",}) do
     attempt = Auth.attempt(%{email: email, password: password})
 
     case attempt do
@@ -30,5 +30,16 @@ defmodule Planner.LoginController do
             }
           ]})
     end
+  end
+
+  def create(conn, _) do
+    conn
+    |> put_status(400)
+    |> json(%{errors: [
+        %{
+          status: 400,
+          message: "Invalid grant or missing username or password.",
+        }
+      ]})
   end
 end
