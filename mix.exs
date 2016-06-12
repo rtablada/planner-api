@@ -45,7 +45,8 @@ defmodule Planner.Mixfile do
       {:exrm, "~> 1.0"},
       {:guardian, "~> 0.12.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:comeonin, "~> 2.4"}
+      {:comeonin, "~> 2.4"},
+      {:cors_plug, "~> 1.1"},
     ]
   end
 
