@@ -8,6 +8,7 @@ defmodule Planner.LoginControllerTest do
     user = Planner.Repo.insert!(changeset)
 
     input = Map.put(@user_attrs, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
 
     conn = post(conn, login_path(conn, :create), input)
 
@@ -18,6 +19,7 @@ defmodule Planner.LoginControllerTest do
 
   test "errors when user does not exist", %{conn: conn} do
     input = Map.put(@user_attrs, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
 
     conn = post(conn, login_path(conn, :create), input)
 
@@ -30,10 +32,11 @@ defmodule Planner.LoginControllerTest do
   test "errors with invalid password for existing user", %{conn: conn} do
     changeset = Planner.User.register_changeset(%Planner.User{}, @user_attrs)
     Planner.Repo.insert!(changeset)
-    invalid_attrs = Map.put(@user_attrs, :password, "invalid")
-    invalid_attrs = Map.put(invalid_attrs, :grant_type, "password")
+    input = Map.put(@user_attrs, :password, "invalid")
+    input = Map.put(input, :grant_type, "password")
+    input = Map.put(input, :username, @user_attrs[:email])
 
-    conn = post(conn, login_path(conn, :create), invalid_attrs)
+    conn = post(conn, login_path(conn, :create), input)
 
     assert \
       %{"errors" => [

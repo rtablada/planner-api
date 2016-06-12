@@ -3,7 +3,7 @@ defmodule Planner.LoginController do
 
   alias Planner.Auth
 
-  def create(conn, %{"email" => email, "password" => password, "grant_type" => "password",}) do
+  def create(conn, %{"username" => email, "password" => password, "grant_type" => "password",}) do
     attempt = Auth.attempt(%{email: email, password: password})
 
     case attempt do
