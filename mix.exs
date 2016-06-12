@@ -23,6 +23,7 @@ defmodule Planner.Mixfile do
         :phoenix, :cowboy,
         :postgrex, :logger,
         :gettext, :phoenix_ecto,
+        :comeonin
       ]
     ]
   end
@@ -42,6 +43,9 @@ defmodule Planner.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
       {:exrm, "~> 1.0"},
+      {:guardian, "~> 0.12.0"},
+      {:mix_test_watch, "~> 0.2", only: :dev},
+      {:comeonin, "~> 2.4"}
     ]
   end
 
