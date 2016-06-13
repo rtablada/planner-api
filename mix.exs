@@ -23,7 +23,8 @@ defmodule Planner.Mixfile do
         :phoenix, :cowboy,
         :postgrex, :logger,
         :gettext, :phoenix_ecto,
-        :comeonin
+        :comeonin, :guardian,
+        :cors_plug, :ja_serializer
       ]
     ]
   end
