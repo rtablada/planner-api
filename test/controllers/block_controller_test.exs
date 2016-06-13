@@ -1,6 +1,7 @@
 defmodule Planner.BlockControllerTest do
   use Planner.ConnCase
 
+  alias Planner.Lesson
   alias Planner.Block
   @valid_attrs %{completed: true, estimated_time: 42, time_elapsed: 42, title: "some content"}
   @invalid_attrs %{}
@@ -32,13 +33,19 @@ defmodule Planner.BlockControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    conn = post conn, block_path(conn, :create), block: @valid_attrs
+    lesson = Repo.insert! %Lesson{}
+    relationships = make_relationship_blob(lesson)
+
+    conn = post conn, block_path(conn, :create), data: %{type: "blocks", attributes: @valid_attrs, relationships: relationships}
     assert json_response(conn, 201)["data"]["id"]
     assert Repo.get_by(Block, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, block_path(conn, :create), block: @invalid_attrs
+    lesson = Repo.insert! %Lesson{}
+    relationships = make_relationship_blob(lesson)
+
+    conn = post conn, block_path(conn, :create), data: %{type: "blocks", attributes: @invalid_attrs, relationships: relationships}
     assert json_response(conn, 422)["errors"] != %{}
   end
 
@@ -60,5 +67,9 @@ defmodule Planner.BlockControllerTest do
     conn = delete conn, block_path(conn, :delete, block)
     assert response(conn, 204)
     refute Repo.get(Block, block.id)
+  end
+
+  defp make_relationship_blob(lesson) do
+    %{lesson: %{data: %{type: "lessons", id: lesson.id}}}
   end
 end

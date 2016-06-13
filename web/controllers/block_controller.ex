@@ -3,14 +3,22 @@ defmodule Planner.BlockController do
 
   alias Planner.Block
 
-  plug :scrub_params, "block" when action in [:create, :update]
-
   def index(conn, _params) do
     blocks = Repo.all(Block)
     render(conn, "index.json", blocks: blocks)
   end
 
-  def create(conn, %{"block" => block_params}) do
+  def create(conn, %{"data" => %{
+    "type" => "blocks",
+    "attributes" => block_params,
+    "relationships" => %{
+      "lesson" => %{
+        "data" => %{
+          "type" => "lessons",
+          "id" => lesson_id,
+        }
+      }
+    }}}) do
     changeset = Block.changeset(%Block{}, block_params)
 
     case Repo.insert(changeset) do
