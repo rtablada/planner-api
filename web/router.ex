@@ -1,10 +1,6 @@
 defmodule Planner.Router do
   use Planner.Web, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-  end
-
   pipeline :api do
     plug :accepts, ["json", "json-api"]
   end
@@ -36,7 +32,6 @@ defmodule Planner.Router do
   end
 
   scope "/", Planner do
-    pipe_through :browser
     get "/*catch_all", LightningController, :assets
   end
 end
