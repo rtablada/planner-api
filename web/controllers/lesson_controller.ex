@@ -4,7 +4,8 @@ defmodule Planner.LessonController do
   alias Planner.Lesson
 
   def index(conn, _params) do
-    lessons = Repo.all(Lesson, preload: [:blocks])
+    lessons = Repo.all(Lesson)
+    lessons = Repo.preload(lessons, :blocks)
     render(conn, "index.json", data: lessons)
   end
 

@@ -19,7 +19,7 @@ defmodule Planner.BlockController do
         }
       }
     }}}) do
-    changeset = Block.changeset(%Block{lesson_id: lesson_id}, block_params)
+    changeset = Block.changeset(%Block{lesson_id: String.to_integer(lesson_id)}, block_params)
 
     case Repo.insert(changeset) do
       {:ok, block} ->
@@ -52,7 +52,7 @@ defmodule Planner.BlockController do
       }
     }}}) do
     block = Repo.get!(Block, id)
-    block_params = Map.put(block_params, "lesson_id", lesson_id)
+    block_params = Map.put(block_params, "lesson_id", String.to_integer(lesson_id))
     changeset = Block.changeset(block, block_params)
 
     case Repo.update(changeset) do

@@ -95,6 +95,7 @@ defmodule Planner.BlockControllerTest do
   end
 
   defp make_relationship_blob(lesson) do
-    %{lesson: %{data: %{type: "lessons", id: lesson.id}}}
+
+    %{lesson: %{data: %{type: "lessons", id: Integer.to_string(lesson.id)}}}
   end
 end

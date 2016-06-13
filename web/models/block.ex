@@ -11,8 +11,8 @@ defmodule Planner.Block do
     timestamps
   end
 
-  @required_fields ~w(title estimated_time completed time_elapsed)
-  @optional_fields ~w()
+  @required_fields ~w(title estimated_time completed)
+  @optional_fields ~w(time_elapsed)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
