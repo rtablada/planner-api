@@ -8,6 +8,7 @@ defmodule Planner.Lesson do
     field :image, :string
     field :quote, :string
     belongs_to :instructor, Planner.Instructor
+    has_many(:blocks, Planner.Block)
 
     timestamps
   end
