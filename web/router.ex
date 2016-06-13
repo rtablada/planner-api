@@ -19,13 +19,15 @@ defmodule Planner.Router do
     get("/", StatusController, :index)
 
     post("/token", LoginController, :create)
+    resources("/lessons", LessonController, except: [:new, :edit, :create, :delete, :update])
+    resources("/blocks", BlockController, except: [:new, :edit, :create, :delete, :update])
   end
 
   scope "/api", Planner do
     pipe_through :api_auth
 
     resources("/users", UserController, except: [:new, :edit])
-    resources("/lessons", LessonController, except: [:new, :edit])
-    resources("/blocks", BlockController, except: [:new, :edit])
+    resources("/lessons", LessonController, except: [:index, :show, :new, :edit])
+    resources("/blocks", BlockController, except: [:index, :show, :new, :edit])
   end
 end
