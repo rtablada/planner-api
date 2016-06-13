@@ -52,6 +52,7 @@ defmodule Planner.BlockController do
       }
     }}}) do
     block = Repo.get!(Block, id)
+    block_params = Map.put(block_params, "lesson_id", lesson_id)
     changeset = Block.changeset(block, block_params)
 
     case Repo.update(changeset) do
