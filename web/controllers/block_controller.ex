@@ -39,7 +39,18 @@ defmodule Planner.BlockController do
     render(conn, "show.json", block: block)
   end
 
-  def update(conn, %{"id" => id, "block" => block_params}) do
+  def update(conn, %{"data" => %{
+    "id" => id,
+    "type" => "blocks",
+    "attributes" => block_params,
+    "relationships" => %{
+      "lesson" => %{
+        "data" => %{
+          "type" => "lessons",
+          "id" => lesson_id,
+        }
+      }
+    }}}) do
     block = Repo.get!(Block, id)
     changeset = Block.changeset(block, block_params)
 

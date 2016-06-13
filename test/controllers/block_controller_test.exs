@@ -50,15 +50,22 @@ defmodule Planner.BlockControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
+    lesson = Repo.insert! %Lesson{}
+    relationships = make_relationship_blob(lesson)
+
     block = Repo.insert! %Block{}
-    conn = put conn, block_path(conn, :update, block), block: @valid_attrs
+
+    conn = put conn, block_path(conn, :update, block), data: %{id: block.id, type: "blocks", attributes: @valid_attrs, relationships: relationships}
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Block, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
+    lesson = Repo.insert! %Lesson{}
+    relationships = make_relationship_blob(lesson)
+
     block = Repo.insert! %Block{}
-    conn = put conn, block_path(conn, :update, block), block: @invalid_attrs
+    conn = put conn, block_path(conn, :update, block), data: %{id: block.id, type: "blocks", attributes: @invalid_attrs, relationships: relationships}
     assert json_response(conn, 422)["errors"] != %{}
   end
 
