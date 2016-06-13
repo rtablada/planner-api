@@ -26,5 +26,6 @@ defmodule Planner.Router do
 
     resources("/users", UserController, except: [:new, :edit])
     resources("/lessons", LessonController, except: [:new, :edit])
+    resources("/blocks", BlockController, except: [:new, :edit])
   end
 end
