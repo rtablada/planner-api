@@ -49,6 +49,7 @@ defmodule Planner.Mixfile do
       {:comeonin, "~> 2.4"},
       {:cors_plug, "~> 1.1"},
       {:ja_serializer, "~> 0.8.1"},
+      {:exredis, ">= 0.2.2"},
     ]
   end
 
