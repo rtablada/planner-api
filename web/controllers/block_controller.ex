@@ -1,0 +1,57 @@
+defmodule Planner.BlockController do
+  use Planner.Web, :controller
+
+  alias Planner.Block
+
+  plug :scrub_params, "block" when action in [:create, :update]
+
+  def index(conn, _params) do
+    blocks = Repo.all(Block)
+    render(conn, "index.json", blocks: blocks)
+  end
+
+  def create(conn, %{"block" => block_params}) do
+    changeset = Block.changeset(%Block{}, block_params)
+
+    case Repo.insert(changeset) do
+      {:ok, block} ->
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", block_path(conn, :show, block))
+        |> render("show.json", block: block)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Planner.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
+  def show(conn, %{"id" => id}) do
+    block = Repo.get!(Block, id)
+    render(conn, "show.json", block: block)
+  end
+
+  def update(conn, %{"id" => id, "block" => block_params}) do
+    block = Repo.get!(Block, id)
+    changeset = Block.changeset(block, block_params)
+
+    case Repo.update(changeset) do
+      {:ok, block} ->
+        render(conn, "show.json", block: block)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(Planner.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    block = Repo.get!(Block, id)
+
+    # Here we use delete! (with a bang) because we expect
+    # it to always work (and if it does not, it will raise).
+    Repo.delete!(block)
+
+    send_resp(conn, :no_content, "")
+  end
+end

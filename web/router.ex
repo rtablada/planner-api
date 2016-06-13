@@ -19,6 +19,7 @@ defmodule Planner.Router do
     get("/", StatusController, :index)
 
     post("/token", LoginController, :create)
+    resources("/blocks", BlockController, except: [:new, :edit])
   end
 
   scope "/api", Planner do
