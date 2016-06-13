@@ -5,7 +5,7 @@ defmodule Planner.Block do
     field :title, :string
     field :estimated_time, :integer
     field :completed, :boolean, default: false
-    field :time_elapsed, :integer
+    field :time_elapsed, :integer, default: 0
     belongs_to :lesson, Planner.Lesson
 
     timestamps
