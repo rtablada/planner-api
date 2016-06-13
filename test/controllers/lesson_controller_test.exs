@@ -23,11 +23,19 @@ defmodule Planner.LessonControllerTest do
 
   test "shows chosen resource", %{conn: conn} do
     lesson = Repo.insert! %Lesson{}
+    block = Repo.insert! %Planner.Block{lesson_id: lesson.id}
     conn = get(conn, lesson_path(conn, :show, lesson))
 
     assert resp = json_response(conn, 200)
 
-    assert %{"data" => %{"id" => id, "attributes" => attributes, "relationships" => _}} = resp
+    assert %{"data" => %{
+      "id" => id, "attributes" => attributes,
+      "relationships" => %{
+        "blocks" => %{"data" => blocks}
+      }
+    }} = resp
+
+    [%{"id" => block_id}] = blocks
 
     assert attributes == %{
       "week" => lesson.week,
@@ -37,6 +45,7 @@ defmodule Planner.LessonControllerTest do
       "quote" => lesson.quote
     }
 
+    assert String.to_integer(block_id) == block.id
     assert String.to_integer(id) == lesson.id
   end
 
