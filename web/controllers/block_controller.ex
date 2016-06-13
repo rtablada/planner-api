@@ -5,6 +5,7 @@ defmodule Planner.BlockController do
 
   def index(conn, _params) do
     blocks = Repo.all(Block)
+    blocks = Repo.preload(blocks, :lesson)
     render(conn, "index.json", data: blocks)
   end
 
@@ -23,6 +24,8 @@ defmodule Planner.BlockController do
 
     case Repo.insert(changeset) do
       {:ok, block} ->
+        block = Repo.preload(block, :lesson)
+
         conn
         |> put_status(:created)
         |> put_resp_header("location", block_path(conn, :show, block))
@@ -36,6 +39,7 @@ defmodule Planner.BlockController do
 
   def show(conn, %{"id" => id}) do
     block = Repo.get!(Block, id)
+    block = Repo.preload(block, :lesson)
     render(conn, "show.json", data: block)
   end
 
@@ -57,6 +61,7 @@ defmodule Planner.BlockController do
 
     case Repo.update(changeset) do
       {:ok, block} ->
+        block = Repo.preload(block, :lesson)
         render(conn, "show.json", data: block)
       {:error, changeset} ->
         conn

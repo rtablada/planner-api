@@ -6,12 +6,13 @@ defmodule Planner.Block do
     field :estimated_time, :integer
     field :completed, :boolean, default: false
     field :time_elapsed, :integer, default: 0
+    field :order, :integer, default: 0
     belongs_to :lesson, Planner.Lesson
 
     timestamps
   end
 
-  @required_fields ~w(title estimated_time completed)
+  @required_fields ~w(title estimated_time completed order)
   @optional_fields ~w(time_elapsed)
 
   @doc """
