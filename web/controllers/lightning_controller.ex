@@ -12,9 +12,9 @@ defmodule Planner.LightningController do
     {:ok, client} = Exredis.start_link
 
     sha = client
-            |> Exredis.query(["GET", "planning:index:current"])
+            |> Exredis.query(["GET", "planner:index:current"])
     result = client
-            |> Exredis.query(["GET", "planning:index:#{sha}"])
+            |> Exredis.query(["GET", "planner:index:#{sha}"])
 
     html(conn, result)
   end
