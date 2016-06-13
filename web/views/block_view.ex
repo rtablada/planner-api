@@ -1,20 +1,11 @@
 defmodule Planner.BlockView do
   use Planner.Web, :view
+  use JaSerializer.PhoenixView
 
-  def render("index.json", %{blocks: blocks}) do
-    %{data: render_many(blocks, Planner.BlockView, "block.json")}
-  end
+  attributes [:title, :estimated_time, :completed, :time_elapsed]
+  has_one :lesson, link: :lesson_link
 
-  def render("show.json", %{block: block}) do
-    %{data: render_one(block, Planner.BlockView, "block.json")}
-  end
-
-  def render("block.json", %{block: block}) do
-    %{id: block.id,
-      title: block.title,
-      estimated_time: block.estimated_time,
-      completed: block.completed,
-      time_elapsed: block.time_elapsed,
-      lesson_id: block.lesson_id}
+  def lesson_link(block, conn) do
+    user_url(conn, :show, block.lesson_id)
   end
 end
