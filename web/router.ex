@@ -19,7 +19,6 @@ defmodule Planner.Router do
     get("/", StatusController, :index)
 
     post("/token", LoginController, :create)
-    resources("/blocks", BlockController, except: [:new, :edit])
   end
 
   scope "/api", Planner do
@@ -27,5 +26,6 @@ defmodule Planner.Router do
 
     resources("/users", UserController, except: [:new, :edit])
     resources("/lessons", LessonController, except: [:new, :edit])
+    resources("/blocks", BlockController, except: [:new, :edit])
   end
 end
