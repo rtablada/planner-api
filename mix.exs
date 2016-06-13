@@ -24,7 +24,8 @@ defmodule Planner.Mixfile do
         :postgrex, :logger,
         :gettext, :phoenix_ecto,
         :comeonin, :guardian,
-        :cors_plug, :ja_serializer
+        :cors_plug, :ja_serializer,
+        :exredis
       ]
     ]
   end
