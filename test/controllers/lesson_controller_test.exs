@@ -27,7 +27,7 @@ defmodule Planner.LessonControllerTest do
 
     assert resp = json_response(conn, 200)
 
-    assert %{"data" => %{"id" => id, "attributes" => attributes}} = resp
+    assert %{"data" => %{"id" => id, "attributes" => attributes, "relationships" => _}} = resp
 
     assert attributes == %{
       "week" => lesson.week,
