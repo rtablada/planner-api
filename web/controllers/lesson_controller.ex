@@ -3,14 +3,12 @@ defmodule Planner.LessonController do
 
   alias Planner.Lesson
 
-  plug :scrub_params, "lesson" when action in [:create, :update]
-
   def index(conn, _params) do
     lessons = Repo.all(Lesson)
-    render(conn, "index.json", lessons: lessons)
+    render(conn, "index.json", data: lessons)
   end
 
-  def create(conn, %{"lesson" => lesson_params}) do
+  def create(conn, %{"data" => %{"type" => "lessons", "attributes" => lesson_params}}) do
     changeset = Lesson.changeset(%Lesson{}, lesson_params)
 
     case Repo.insert(changeset) do
@@ -18,7 +16,7 @@ defmodule Planner.LessonController do
         conn
         |> put_status(:created)
         |> put_resp_header("location", lesson_path(conn, :show, lesson))
-        |> render("show.json", lesson: lesson)
+        |> render("show.json", data: lesson)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -28,16 +26,16 @@ defmodule Planner.LessonController do
 
   def show(conn, %{"id" => id}) do
     lesson = Repo.get!(Lesson, id)
-    render(conn, "show.json", lesson: lesson)
+    render(conn, "show.json", data: lesson)
   end
 
-  def update(conn, %{"id" => id, "lesson" => lesson_params}) do
+  def update(conn, %{"data" => %{"id" => id, "type" => "lessons", "attributes" => lesson_params}}) do
     lesson = Repo.get!(Lesson, id)
     changeset = Lesson.changeset(lesson, lesson_params)
 
     case Repo.update(changeset) do
       {:ok, lesson} ->
-        render(conn, "show.json", lesson: lesson)
+        render(conn, "show.json", data: lesson)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

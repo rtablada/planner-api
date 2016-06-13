@@ -24,6 +24,7 @@ defmodule Planner.Router do
   scope "/api", Planner do
     pipe_through :api_auth
 
+    resources("/users", UserController, except: [:new, :edit])
     resources("/lessons", LessonController, except: [:new, :edit])
   end
 end

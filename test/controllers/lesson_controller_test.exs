@@ -17,49 +17,62 @@ defmodule Planner.LessonControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get conn, lesson_path(conn, :index)
+    conn = get(conn, lesson_path(conn, :index))
     assert json_response(conn, 200)["data"] == []
   end
 
   test "shows chosen resource", %{conn: conn} do
     lesson = Repo.insert! %Lesson{}
-    conn = get conn, lesson_path(conn, :show, lesson)
-    assert json_response(conn, 200)["data"] == %{"id" => lesson.id,
+    conn = get(conn, lesson_path(conn, :show, lesson))
+
+    assert resp = json_response(conn, 200)
+
+    assert %{"data" => %{"id" => id, "attributes" => attributes}} = resp
+
+    assert attributes == %{
       "week" => lesson.week,
       "day" => lesson.day,
       "date" => lesson.date,
       "image" => lesson.image,
-      "quote" => lesson.quote,
-      "instructor_id" => lesson.instructor_id}
+      "quote" => lesson.quote
+    }
+
+    assert String.to_integer(id) == lesson.id
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
-      get conn, lesson_path(conn, :show, -1)
+      get(conn, lesson_path(conn, :show, -1))
     end
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    conn = post conn, lesson_path(conn, :create), lesson: @valid_attrs
-    assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Lesson, @valid_attrs)
+    conn = post(conn, lesson_path(conn, :create), data: %{type: "lessons", attributes: @valid_attrs})
+
+    assert id = json_response(conn, 201)["data"]["id"]
+    assert lesson = Repo.get_by!(Lesson, @valid_attrs)
+
+    assert lesson.id == String.to_integer(id)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, lesson_path(conn, :create), lesson: @invalid_attrs
+    conn = post conn, lesson_path(conn, :create), data: %{type: "lessons", attributes: @invalid_attrs}
     assert json_response(conn, 422)["errors"] != %{}
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     lesson = Repo.insert! %Lesson{}
-    conn = put conn, lesson_path(conn, :update, lesson), lesson: @valid_attrs
-    assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Lesson, @valid_attrs)
+    conn = put conn, lesson_path(conn, :update, lesson), data: %{"id": lesson.id,type: "lessons", attributes: @valid_attrs}
+
+    assert id = json_response(conn, 200)["data"]["id"]
+    assert lesson = Repo.get_by!(Lesson, @valid_attrs)
+
+    assert lesson.id == String.to_integer(id)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     lesson = Repo.insert! %Lesson{}
-    conn = put conn, lesson_path(conn, :update, lesson), lesson: @invalid_attrs
+    conn = put conn, lesson_path(conn, :update, lesson), data: %{"id": lesson.id,type: "lessons", attributes: @invalid_attrs}
     assert json_response(conn, 422)["errors"] != %{}
   end
 
