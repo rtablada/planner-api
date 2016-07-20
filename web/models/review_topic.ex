@@ -1,20 +1,15 @@
-defmodule Planner.Lesson do
+defmodule Planner.ReviewTopic do
   use Planner.Web, :model
 
-  schema "lessons" do
-    field :week, :integer
-    field :day, :integer
-    field :date, Ecto.Date
-    field :image, :string
-    field :quote, :string
-    belongs_to :instructor, Planner.Instructor
-    has_many(:blocks, Planner.Block)
-    has_many(:review_topics, Planner.ReviewTopic)
+  schema "review_topics" do
+    field :name, :string
+    field :done, :boolean, default: false
+    belongs_to :lesson, Planner.Lesson
 
     timestamps
   end
 
-  @required_fields ~w(week day date image quote)
+  @required_fields ~w(name done)
   @optional_fields ~w()
 
   @doc """

@@ -6,6 +6,7 @@ defmodule Planner.LessonController do
   def index(conn, _params) do
     lessons = Repo.all(Lesson)
     lessons = Repo.preload(lessons, :blocks)
+    lessons = Repo.preload(lessons, :review_topics)
     render(conn, "index.json", data: lessons)
   end
 
@@ -15,6 +16,7 @@ defmodule Planner.LessonController do
     case Repo.insert(changeset) do
       {:ok, lesson} ->
         lesson = Repo.preload(lesson, :blocks)
+        lesson = Repo.preload(lesson, :review_topics)
 
         conn
         |> put_status(:created)
@@ -30,6 +32,7 @@ defmodule Planner.LessonController do
   def show(conn, %{"id" => id}) do
     lesson = Repo.get!(Lesson, id)
     lesson = Repo.preload(lesson, :blocks)
+    lesson = Repo.preload(lesson, :review_topics)
 
     render(conn, "show.json", data: lesson)
   end
@@ -41,6 +44,7 @@ defmodule Planner.LessonController do
     case Repo.update(changeset) do
       {:ok, lesson} ->
         lesson = Repo.preload(lesson, :blocks)
+        lesson = Repo.preload(lesson, :review_topics)
 
         render(conn, "show.json", data: lesson)
       {:error, changeset} ->
